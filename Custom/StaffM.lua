@@ -12,29 +12,30 @@
     lukezammit | luka ~<3 (28491111)
 --]]
 
-local command = {}
-command.PermissionLevel = 1
-command.Shorthand = "staffm"
-command.Params = {"..."}
-command.Usage = "staffm Your text here"
-command.Description = [[Displays the given message to staff members.]] 
+local Command = { }
+Command.PermissionLevel = 1
+Command.Shorthand = "staffm"
+Command.Params = { "..." }
+Command.Usage = "staffm Your text here"
+Command.Description = "Displays the given message to staff members."
 
-local groupid = 1; --The group id.
-local role = 1; --The RoleId which you want and any rank above to see staff messages.
+local GroupID = 1 -- The Group ID goes here.
+local RoleID = 1 -- Here's the Role ID (or the rank number if you want to call it that).
 
-command.Init = function(main)
+function Command.Init(Main)
+	
 end
 
-command.Run = function(main,user,...)
-    local message = game:GetService("Chat"):FilterStringForBroadcast(table.concat({...}," "),user)
-    local list = {}
-    for _,player in pairs(game:GetService("Players"):GetPlayers()) do
-        if player:GetRankInGroup(groupid) >= role then
-            SyncAPI.DisplayMessage(player,"STAFF MESSAGE",message)
-            table.insert(list,player.Name)
-        end
-    end
-    return true,"Shown staff message to users: " .. table.concat(list,", ")
+function Command.Run(Main, User, ...)
+	local Message = game:GetService("Chat"):FilterStringForBroadcast(table.concat({...}, " "), User)
+	local List = { }
+	for _, Player in pairs(game:GetService("Players"):GetPlayers()) do
+		if Player:GetRankInGroup(GroupID) >= RoleID then
+			SyncAPI.DisplayMessage(Player, "STAFF MESSAGE", Message)
+			table.insert(List, Player.Name)
+		end
+	end
+	return true, "Shown staff message to users: " .. table.concat(List, ", ")
 end
 
-return command
+return Command
